@@ -1,36 +1,70 @@
-# aws-nodejs-ec2-s3-project
-Deployed a Node.js app on EC2 with S3 static content and VPC networking.
-# 🚀 Node.js Web App Deployment using AWS EC2, S3, and VPC
+# AWS EC2 & S3 Integration Project: Node.js Web App Deployment
+
 
 ## 📌 Project Overview
+Deployed a Node.js web application on AWS EC2 with static image assets hosted on Amazon S3. The application displays a personalized achievement certificate with dynamic content integration between EC2 and S3.
 
-This project demonstrates how to deploy a Node.js application on an **Amazon EC2 instance**, serve static content from **Amazon S3**, and securely manage the infrastructure using **VPC (Virtual Private Cloud)** and **IAM roles**. The goal was to simulate a real-world cloud deployment environment with proper networking and access control.
+## 🛠️ Technical Components
+- **AWS Services**:
+  - EC2 (Ubuntu)
+  - S3 (Static Image Hosting)
+  - VPC (Custom Network)
+  - IAM (Systems Manager Access)
+- **Stack**:
+  - Node.js
+  - Express Framework
+  - Linux Shell
 
----
+## 📋 Step-by-Step Implementation
 
-## 🧰 Technologies & AWS Services Used
-
-- **Amazon EC2** – Host the Node.js server on a Linux instance
-- **Amazon S3** – Store public images for use in the app
-- **Amazon VPC** – Set up a dedicated network with private/public subnet configuration
-- **AWS IAM** – Attach roles and policies to allow EC2 to use Systems Manager securely
-- **AWS Systems Manager** – SSH-less connection to EC2
-- **Linux (Ubuntu)** – OS used to configure and run the app
-- **Node.js + Express** – Server-side environment for the application
-
----
-
-## 🧑‍💻 Steps Performed
-
-### 1. ✅ EC2 Instance Setup
-- Launched EC2 using Ubuntu AMI inside a **custom VPC**
-- Attached **IAM role** with Systems Manager policies
-- Configured **Security Groups** to allow SSH (for testing), HTTP traffic
-- Connected to EC2 using **AWS Systems Manager (Session Manager)**
-
-### 2. 🧠 Install Node.js & npm
+### 1. Infrastructure Setup
 ```bash
+# Create a custom VPC with:
+- Public subnet
+- Internet Gateway
+- Route tables
+- Security Group (HTTP: 80 access)
+
+2. EC2 Configuration
+Launch Instance:
+
+AMI: Ubuntu Server 22.04 LTS
+
+Instance Type: t2.micro
+
+IAM Role: AmazonSSMManagedInstanceCore
+
+Install Dependencies:
+
+bash
 sudo apt update
-sudo apt install nodejs npm -y
-node -v
-npm -v
+sudo apt install -y nodejs npm
+node -v && npm -v  # Verify installations
+3. S3 Bucket Setup
+bash
+# Created bucket: projectzbucket
+- Uploaded 3 images (public read access)
+- Retrieved object URLs:
+  https://projectzbucket.s3.eu-north-1.amazonaws.com/img1.jfif
+  https://projectzbucket.s3.eu-north-1.amazonaws.com/images2.png
+  https://projectzbucket.s3.eu-north-1.amazonaws.com/images3.jfif
+4. Application Deployment
+File Structure:
+
+/project-files
+├── app.js
+└── completion.html
+Modified Files:
+
+Updated completion.html:
+
+html
+<!-- Personalization -->
+Hi <strong>Mohammad Zahid</strong>, 
+
+<!-- S3 Image Integration -->
+<img src="https://projectzbucket.s3.eu-north-1.amazonaws.com/img1.jfif">
+Run Application:
+
+bash
+node app.js  # Runs on port 80
